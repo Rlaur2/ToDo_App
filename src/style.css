@@ -27,16 +27,39 @@ header {
     padding-left: 2rem;
 }
 
+.open-menu-button {
+    display: flex;
+    padding: .5rem;
+}
+
 .app-name {
     margin-left: 2rem;
     font-family: Environment;
 }
 
-.project-title {
+.project-title-container {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: baseline;
+}
+
+.project-title-button {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding: .5rem;
+} 
+
+.new-task-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem;
+}
+
+.open-menu-button, .project-title-button:hover, .new-task-button:hover {
+    cursor: pointer;
 }
 
 .title {
@@ -45,7 +68,7 @@ header {
     padding-right: .5rem;
 }
 
-.new-task-button {
+.new-task-button-container {
     flex: 1;
     display: flex;
     justify-content: center;
@@ -55,4 +78,11 @@ header {
 .task {
     font-family: Environment;
     padding-left: .5rem;
+}
+
+.menu {
+    width: 20vw;
+    height: calc(100vh - 6rem);
+    border-top: 1px white solid;
+    background-color: rgb(87, 0, 0)
 }
