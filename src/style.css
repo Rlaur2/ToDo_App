@@ -227,27 +227,277 @@ header {
 
 .project-details {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-flow: column;
     border: 3px var(--background) solid;
     padding: 1rem;
     border-radius: 10px;
     box-shadow: 2px 2px 3px -1px;
+    margin-bottom: 2rem;
+}
+
+.project-main-details {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
 }
 
 .priority-detail {
     display: flex;
-    gap: 3px;
+    align-items: center;
+    gap: 6px;
 }
 
+.actual-priority {
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+}
+
+.low-priority {
+    background-color: green;
+}
+
+.medium-priority {
+    background-color: goldenrod;
+}
+
+.high-priority {
+    background-color: red;
+}
 
 .completion-status {
-    background-color: rgb(250, 99, 99);
     padding: .6rem;
     border-radius: 10px;
     box-shadow: 2px 2px 7px -2px;
 }
 
+.incomplete {
+    background-color: rgb(250, 99, 99);
+}
+
 .complete {
     background-color: rgb(47, 201, 47);
+}
+
+.expanded-details {
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+    margin-top: .8rem;
+    border-top: 2px var(--background) solid;
+}
+
+.task-and-button {
+    display: flex;
+    justify-content: space-between;
+    margin-top: .6rem;
+}
+
+.task-title {
+    margin-top: .4rem;
+    font-weight: 900;
+    font-size: 1.2rem;
+}
+
+.clear-complete {
+    color: rgb(67, 67, 167);
+    text-decoration: underline;
+    margin-bottom: 2rem;
+}
+
+.complete-tasks .task-title-detail, .complete-tasks .due-date-detail {
+    color: rgb(92, 91, 91);
+}
+
+.complete-tasks .task-title-detail {
+    text-decoration: line-through;
+}
+
+/* the pop-up modal for the name edit looking ok*/
+.edit-project-name {
+    display: none;
+}
+
+.transparent-background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(60, 60, 60, .3);
+}
+
+.edit-name {
+    display: flex;
+    gap: 8px;
+    flex-flow: column;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: bisque;
+    border: var(--background) 4px solid;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px -2px;
+    width: fit-content;
+    padding: 1rem 3rem 1rem 3rem;
+    position: absolute;
+    left: 37vw;
+    top: 45vh;
+}
+
+.edit-name label {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.edit-name input {
+    font-family: Environment;
+    font-size: 2rem;
+    border-radius: 10px;
+    padding: .4rem;
+}
+
+
+.edit-name-submit {
+    background-color: rgb(47, 201, 47);
+    padding: .6rem;
+    border-radius: 10px;
+    box-shadow: 2px 2px 7px -2px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* take out the default border shadow or w/e next time you get
+the chance */
+
+.task-input-details {
+    display: none;
+}
+
+.task-input-form {
+    position: absolute;
+    left: 35vw;
+    top: 35vh;
+    background-color: bisque;
+    width: fit-content;
+    display: grid;
+    grid-template-areas: 
+    'task-header due-date'
+    'task-title date-picker'
+    'task-description priority'
+    'task-description finish';
+    padding: 1.5rem;
+    border: var(--background) 4px solid;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px -2px;
+    gap: 1.3rem;
+}
+
+.task-header {
+    grid-area: task-header;
+    font-family: Environment;
+    font-size: 1.6rem;
+}
+
+.due-date-title {
+    grid-area: due-date;
+    font-size: 1.6rem;
+}
+
+.task-title-input {
+    grid-area: task-title;
+}
+
+.task-title-input input {
+    font-size: 1.3rem;
+    padding: .4rem;
+    border-radius: 10px;
+}
+
+.due-date-picker {
+    grid-area: date-picker;
+}
+
+.due-date-picker input {
+    font-size: 1.3rem;
+    padding: .4rem;
+    border-radius: 10px;
+}
+
+.task-description-input {
+    grid-area: task-description;
+}
+
+.task-description-input textarea {
+    font-size: 1.3rem;
+    padding: .4rem;
+    border-radius: 10px;
+}
+
+.priority-picker {
+    grid-area: priority;
+    display: flex;
+    gap: 10px;
+    font-size: 1.3rem;
+    align-items: center;
+}
+
+.low, .medium, .high {
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.low {
+    background-color: green;
+}
+
+.medium {
+    background-color: goldenrod;
+}
+
+.high {
+    background-color: red;
+}
+
+.priority-chosen {
+    outline: 2px solid black;
+}
+
+.finish-button {
+    font-size: 1.3rem;
+    grid-area: finish;
+    background-color: rgb(47, 201, 47);
+    padding: .6rem;
+    border-radius: 10px;
+    width: fit-content;
+    height: fit-content;
+    box-shadow: 2px 2px 7px -2px;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.task-button img {
+    position: relative;
+}
+
+.pop-up-menu {
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+    position: absolute;
+}
+
+
+.edit, .delete {
+    border: var(--background) 3px solid;
+    background-color: bisque;
+    padding: .3rem .6rem;
+    display: flex;
+    justify-content: center;
+    font-size: 1rem;
+    color: black;
 }

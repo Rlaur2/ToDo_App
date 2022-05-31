@@ -37,7 +37,12 @@
         </div>
         <div class="project-area">
             <div class="project-container">
-                <img class="edit-project" src="../src/images/dots-vertical.svg" alt="Edit or delete button">
+                <div class="edit-project"><img src="../src/images/dots-vertical.svg" alt="Edit or delete button">
+                    <div class="pop-up-menu">
+                        <div class="edit">Edit</div>
+                        <div class="delete">Delete</div>
+                    </div>
+                </div>
                 <div class="project">Default Project</div>
                 <img class="arrow" src="../src/images/menu-right-outline.svg" alt="Task expand button">
             </div>    
@@ -67,11 +72,87 @@
             <div class="priority">Priority</div>
             <div class="due-date">Due date</div>
         </div>
-        <div class="project-details">
-            <div class="priority-detail">Priority: <div class="actual-priority">Low</div></div>
-            <div class="task-title-detail">Task One</div>
-            <div class="due-date-detail">May 31, 2022</div>
-            <div class="completion-status">Incomplete</div>
+        <div class="incomplete-tasks">
+            <div class="project-details">
+                <div class="project-main-details">
+                    <div class="priority-detail">Priority: <div class="actual-priority low-priority"></div></div>
+                    <div class="task-title-detail">Start the HTML file</div>
+                    <div class="due-date-detail">May 31, 2022</div>
+                    <div class="completion-status incomplete">Incomplete</div>
+                </div>
+                <div class="expanded-details">
+                    <div class="task-and-button">
+                        <div class="task-title">Start the HTML file</div>
+                        <div class="task-button"><img src="../src/images/dots-vertical-black.svg" alt="">
+                            <div class="pop-up-menu">
+                                <div class="edit">Edit</div>
+                                <div class="delete">Delete</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-description">Start the html file and then go on to the styling.</div>
+                </div>
+            </div>
+        </div>    
+        <div class="clear-complete">Clear completed tasks</div>
+        <div class="complete-tasks">
+            <div class="project-details">
+                <div class="project-main-details">
+                    <div class="priority-detail">Priority: <div class="actual-priority high-priority"></div></div>
+                    <div class="task-title-detail">Start the HTML file</div>
+                    <div class="due-date-detail">May 31, 2022</div>
+                    <div class="completion-status complete">complete</div>
+                </div>
+                <div class="expanded-details">
+                    <div class="task-and-button">
+                        <div class="task-title">Start the HTML file</div>
+                        <div class="task-button"><img src="../src/images/dots-vertical-black.svg" alt=""></div>
+                    </div>
+                    <div class="task-description">Start the html file and then go on to the styling.</div>
+                    <div class="task-and-button">
+                        <div class="task-title">Do the dishes</div>
+                        <div class="task-button"><img src="../src/images/dots-vertical-black.svg" alt="">
+                            <div class="pop-up-menu">
+                                <div class="edit">Edit</div>
+                                <div class="delete">Delete</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-description">Go do the dishes dude, don't let them pile up.</div>
+                </div>
+            </div>
+        </div>
+        <!--Popups and modals are down here-->
+        <div class="edit-project-name">
+            <div class="transparent-background">
+                <div class="edit-name">
+                    <label for="project-name">Edit Project Name</label>
+                    <input type="text" id="project-name">
+                    <div class="edit-name-submit">Submit</div>
+                </div>
+            </div>
+        </div>
+        <div class="task-input-details">
+            <div class="transparent-background">
+                <div class="task-input-form">
+                    <div class="task-header">New Task</div>
+                    <label class="due-date-title" for="date">Due Date:</label> 
+                    <div class="task-title-input"><input type="text" placeholder="Title"></div>
+                    <div class="due-date-picker"><input type="date" name="date" id="date"></div>
+                    <div class="task-description-input"><textarea name="task-description" id="task-description" cols="21" rows="6" placeholder="Description"></textarea></div>
+                    <div class="priority-picker">
+                        <div>Priority:</div>
+                        <div class="low priority-chosen"></div>
+                        <div class="medium"></div>
+                        <div class="high"></div>
+                    </div>
+                    <div class="finish-button">Finish</div>
+                </div>
+            </div>
+        </div>
+        <div class="pop-up-menu">
+            <div class="edit">Edit</div>
+            <div class="delete">Delete</div>
         </div>
     </div>
 </body>
