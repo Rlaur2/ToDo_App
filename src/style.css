@@ -5,13 +5,18 @@
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
+:root {
+    --background: rgb(87, 0, 0);
+    --hovered-background: rgb(41, 2, 2);
+}
+
 @font-face {
     font-family: Environment;
     src: url(./fonts/Environment\ Bold.woff);
 }
 
 header {
-    background-color: rgb(87, 0, 0);
+    background-color: var(--background);
     min-height: 6rem;
     color: white;
     display: flex;
@@ -58,7 +63,12 @@ header {
     padding: .5rem;
 }
 
-.open-menu-button, .project-title-button:hover, .new-task-button:hover {
+.open-menu-button, 
+.project-title-button:hover, 
+.new-task-button:hover, 
+.edit-project:hover, 
+.arrow:hover,
+.new-project-button:hover {
     cursor: pointer;
 }
 
@@ -84,5 +94,65 @@ header {
     width: 20vw;
     height: calc(100vh - 6rem);
     border-top: 1px white solid;
-    background-color: rgb(87, 0, 0)
+    background-color: var(--background);
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    transition: transform 200ms ease-out  50ms;
+}
+
+/* the transition looks good
+.menu:hover {
+    transform: translateX(-100%);
+}*/
+
+.new-project-container {
+    margin-top: 1.5rem;
+    font-family: Environment;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.new-project-button {
+    display: flex;
+    align-items: center;
+}
+
+.project-area {
+    font-size: 1.6rem;
+    color: white;
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.project-container {
+    display: flex;
+    flex: 1;
+    padding: .2rem;
+    margin-top: 1rem;
+}
+
+.arrow {
+    margin-left: auto;
+    margin-right: 1rem;
+    transition: transform 150ms ease-out 50ms;
+}
+
+.arrow:hover {
+    transform: rotate(90deg);
+}
+
+.expanded-tasks {
+    display: flex;
+    flex-flow: column;
+    padding: .4rem 1.3rem;
+    font-size: 1.2rem;
+    background-color: var(--hovered-background);
+}
+
+.tasks {
+    margin-top: .3rem;
+    margin-left: .8rem;
 }
