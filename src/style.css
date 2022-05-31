@@ -15,6 +15,14 @@
     src: url(./fonts/Environment\ Bold.woff);
 }
 
+body {
+    background-color: bisque;
+    display: grid;
+    grid-template-areas: 
+    'header header'
+    'menu main';
+}
+
 header {
     background-color: var(--background);
     min-height: 6rem;
@@ -24,6 +32,7 @@ header {
     align-items: center;
     font-family: Environment;
     font-size: 2rem;
+    grid-area: header;
 }
 
 .left-side-header {
@@ -63,12 +72,18 @@ header {
     padding: .5rem;
 }
 
-.open-menu-button, 
+.open-menu-button:hover, 
 .project-title-button:hover, 
 .new-task-button:hover, 
 .edit-project:hover, 
 .arrow:hover,
-.new-project-button:hover {
+.new-project-button:hover,
+.sorting-method:hover,
+.sorting-reverse:hover,
+.date-created:hover,
+.priority:hover,
+.due-date:hover
+ {
     cursor: pointer;
 }
 
@@ -93,12 +108,13 @@ header {
 .menu {
     width: 20vw;
     height: calc(100vh - 6rem);
-    border-top: 1px white solid;
+    border-top: 1px bisque solid;
     background-color: var(--background);
     display: flex;
     flex-flow: column;
     align-items: center;
     transition: transform 200ms ease-out  50ms;
+    grid-area: menu;
 }
 
 /* the transition looks good
@@ -155,4 +171,83 @@ header {
 .tasks {
     margin-top: .3rem;
     margin-left: .8rem;
+}
+
+.main-project-area {
+    grid-area: main;
+    width: 70vw;
+}
+
+.sorting-container {
+    display: flex;
+    margin: 1rem;
+    gap: 10px;
+    justify-content: center;
+    position: relative;
+}
+
+.sorting-method {
+    color: rgb(67, 67, 167);
+}
+
+.drop-down-sort {
+    width: 110px;
+    border: var(--background) 2px solid;
+    display: flex;
+    flex-flow: column;
+    gap: 5px;
+    justify-content: center;
+    margin-left: 32.5vw;
+    margin-top: -1rem;
+    position: absolute; 
+    transform: scaleY(1);
+    transform-origin: top;
+    transition: transform 150ms ease-out 50ms;
+    background-color: bisque;
+    z-index: 10;
+    /* drop-down menu looking good */
+    display: none;   
+}
+
+/* transition looking good
+.drop-down-sort:hover {
+    transform: scaleY(0);
+    transform-origin: top;
+} */
+
+.date-created, .priority, .due-date {
+    padding: .1rem .4rem;
+}
+
+.date-created:hover,
+.priority:hover,
+.due-date:hover {
+    background-color: rgb(211, 180, 142);
+}
+
+.project-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 3px var(--background) solid;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 2px 2px 3px -1px;
+}
+
+.priority-detail {
+    display: flex;
+    gap: 3px;
+}
+
+
+.completion-status {
+    background-color: rgb(250, 99, 99);
+    padding: .6rem;
+    border-radius: 10px;
+    box-shadow: 2px 2px 7px -2px;
+}
+
+.complete {
+    background-color: rgb(47, 201, 47);
 }
