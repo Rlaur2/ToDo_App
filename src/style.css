@@ -82,7 +82,21 @@ header {
 .sorting-reverse:hover,
 .date-created:hover,
 .priority:hover,
-.due-date:hover
+.due-date:hover,
+.project-main-details:hover,
+.actual-priority:hover,
+.completion-status,
+.task-button,
+.clear-complete,
+.edit-name-submit,
+.low,
+.medium,
+.high,
+.finish-button,
+.edit,
+.delete,
+.yes,
+.no
  {
     cursor: pointer;
 }
@@ -267,17 +281,17 @@ header {
     background-color: red;
 }
 
-.completion-status {
+.completion-status, .yes, .no {
     padding: .6rem;
     border-radius: 10px;
     box-shadow: 2px 2px 7px -2px;
 }
 
-.incomplete {
+.incomplete, .no {
     background-color: rgb(250, 99, 99);
 }
 
-.complete {
+.complete, .yes {
     background-color: rgb(47, 201, 47);
 }
 
@@ -287,7 +301,14 @@ header {
     gap: 10px;
     margin-top: .8rem;
     border-top: 2px var(--background) solid;
+    transition: transform 150ms ease-out 50ms;
+    transform-origin: top;
 }
+
+/* idea for expand animation
+.expanded-details:hover {   
+    transform: scaleY(0);
+} */
 
 .task-and-button {
     display: flex;
@@ -305,6 +326,7 @@ header {
     color: rgb(67, 67, 167);
     text-decoration: underline;
     margin-bottom: 2rem;
+    width: fit-content;
 }
 
 .complete-tasks .task-title-detail, .complete-tasks .due-date-detail {
@@ -329,7 +351,7 @@ header {
     background-color: rgba(60, 60, 60, .3);
 }
 
-.edit-name {
+.edit-name, .confirm-close {
     display: flex;
     gap: 8px;
     flex-flow: column;
@@ -342,8 +364,8 @@ header {
     width: fit-content;
     padding: 1rem 3rem 1rem 3rem;
     position: absolute;
-    left: 37vw;
-    top: 45vh;
+    left: 40%;
+    top: 40%;
 }
 
 .edit-name label {
@@ -377,8 +399,8 @@ the chance */
 
 .task-input-form {
     position: absolute;
-    left: 35vw;
-    top: 35vh;
+    left: 38%;
+    top: 35%;
     background-color: bisque;
     width: fit-content;
     display: grid;
@@ -489,6 +511,7 @@ the chance */
     flex-flow: column;
     gap: 10px;
     position: absolute;
+    display: none;
 }
 
 
@@ -500,4 +523,24 @@ the chance */
     justify-content: center;
     font-size: 1rem;
     color: black;
+}
+
+.confirm-close-container {
+    display: none;
+}
+
+.confirm-close > div {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.confirm-close {
+    top: 45%;
+    left: 45%;
+    
+}
+
+.confirm-buttons {
+    display: flex;
+    gap: 35px;
 }
