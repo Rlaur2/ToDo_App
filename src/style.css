@@ -131,10 +131,10 @@ header {
     grid-area: menu;
 }
 
-/* the transition looks good
-.menu:hover {
+
+.menu-open {
     transform: translateX(-100%);
-}*/
+}
 
 .new-project-container {
     margin-top: 1.5rem;
@@ -339,7 +339,7 @@ header {
 
 /* the pop-up modal for the name edit looking ok*/
 .edit-project-name {
-    display: none;
+    
 }
 
 .transparent-background {
