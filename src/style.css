@@ -393,9 +393,7 @@ header {
 /* take out the default border shadow or w/e next time you get
 the chance */
 
-.task-input-details {
-    display: none;
-}
+
 
 .task-input-form {
     position: absolute;
@@ -484,7 +482,7 @@ the chance */
     background-color: red;
 }
 
-.priority-chosen {
+.active {
     outline: 2px solid black;
 }
 
