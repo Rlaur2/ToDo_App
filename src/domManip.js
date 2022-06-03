@@ -1,3 +1,6 @@
+import { parseISO } from "date-fns";
+import { format } from "date-fns";
+
 const project = { tasks: [] };
 project.name = 'Default Project';
 const domManip = (() => {
@@ -70,6 +73,10 @@ const domManip = (() => {
         })
     })();
     //code to add new tasks to current project
+    let priorityChosen = '';
+    let taskTitle = '';
+    let formattedDate = '';
+    let taskDescription = '';
     const addNewTask = (() => {
        //code to append form to page
         const newTaskButton = document.querySelector('.new-task-button');
@@ -168,21 +175,60 @@ const domManip = (() => {
                     alert('Please enter a title and due date');
                     return;
                 };
-                const taskTitle = innerTaskTitleInput.value;
+                taskTitle = innerTaskTitleInput.value;
                 const dueDate = innerDueDatePicker.value;
-                const taskDescription = innerTaskDescriptionInput.value;
-                let priorityChosen = '';
+                taskDescription = innerTaskDescriptionInput.value;
                 const circles = document.querySelectorAll('.circle');
                 for (let circle of circles) {
                     if (circle.classList.contains('active')) {
                         priorityChosen = circle.id;
                     }
                 };
-                const input = {taskTitle, dueDate, taskDescription, priorityChosen}
+                const date = parseISO(dueDate);
+                formattedDate = format(date, 'PPP');
+                const input = {taskTitle, formattedDate, taskDescription, priorityChosen}
                 project.tasks.push(input);
+                displayTaskDetails();
                 popUps.removeChild(taskInputDetails);
             });
             
+            //code that displays the task details
+            const displayTaskDetails = () => {
+                const incompleteTasks = document.querySelector('.incomplete-tasks');
+                const projectDetails = document.createElement('div');
+                projectDetails.classList.toggle('project-details');
+                const projectMainDetails = document.createElement('div');
+                projectMainDetails.classList.toggle('project-main-details');
+                const priorityDetail = document.createElement('div');
+                priorityDetail.classList.toggle('priority-detail');
+                priorityDetail.textContent = 'Priority:';
+                const actualPriority = document.createElement('div');
+                actualPriority.classList.toggle('actual-priority');
+                priorityDetail.appendChild(actualPriority);
+                const taskTitleDetail = document.createElement('div');
+                taskTitleDetail.classList.toggle('task-title-detail');
+                const dueDateDetail = document.createElement('div');
+                dueDateDetail.classList.toggle('due-date-detail');
+                const completionStatus = document.createElement('div');
+                completionStatus.classList.toggle('completion-status');
+                completionStatus.classList.toggle('incomplete');
+                completionStatus.textContent = 'Incomplete';
+                if (priorityChosen === 'low') {
+                    actualPriority.classList.toggle('low-priority');
+                } else if (priorityChosen === 'medium') {
+                    actualPriority.classList.toggle('medium-priority');
+                } else {
+                    actualPriority.classList.toggle('high-priority');
+                };
+                taskTitleDetail.textContent = taskTitle;
+                dueDateDetail.textContent = formattedDate;
+                projectMainDetails.appendChild(priorityDetail);
+                projectMainDetails.appendChild(taskTitleDetail);
+                projectMainDetails.appendChild(dueDateDetail);
+                projectMainDetails.appendChild(completionStatus);
+                projectDetails.appendChild(projectMainDetails);
+                incompleteTasks.appendChild(projectDetails);
+            }
 
             //code to escape form with escape or or clicking away
             document.addEventListener('keydown', (e) => {
