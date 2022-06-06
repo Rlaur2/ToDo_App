@@ -94,7 +94,7 @@ header {
 .high,
 .finish-button,
 .edit,
-.delete,
+.delete-button,
 .yes,
 .no
  {
@@ -316,7 +316,7 @@ header {
     margin-top: .6rem;
 }
 
-.task-title {
+.expanded-task-title {
     margin-top: .4rem;
     font-weight: 900;
     font-size: 1.2rem;
@@ -338,9 +338,6 @@ header {
 }
 
 /* the pop-up modal for the name edit looking ok*/
-.edit-project-name {
-    
-}
 
 .transparent-background {
     position: absolute;
@@ -509,11 +506,10 @@ the chance */
     flex-flow: column;
     gap: 10px;
     position: absolute;
-    display: none;
 }
 
 
-.edit, .delete {
+.edit, .delete-button {
     border: var(--background) 3px solid;
     background-color: bisque;
     padding: .3rem .6rem;
@@ -541,4 +537,8 @@ the chance */
 .confirm-buttons {
     display: flex;
     gap: 35px;
+}
+
+.hidden {
+    display: none;
 }
