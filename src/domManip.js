@@ -1,5 +1,7 @@
 import { parseISO } from "date-fns";
 import { format } from "date-fns";
+import { compareAsc } from "date-fns";
+import { compareDesc } from "date-fns";
 
 const project = { tasks: [] };
 project.name = "Default Project";
@@ -185,6 +187,7 @@ const domManip = (() => {
         }
         const date = parseISO(dueDate);
         const formattedDate = format(date, "PPP");
+        const timeCreated = new Date();
         const input = {
           taskTitle,
           dueDate,
@@ -193,6 +196,7 @@ const domManip = (() => {
           priorityChosen,
           position: project.tasks.length,
           taskCompletion: 'Incomplete',
+          timeCreated,
         };
         project.tasks.push(input);
         displayTaskDetails(input);
@@ -269,6 +273,15 @@ const domManip = (() => {
         obj.clear = () => {
             completeTasks.removeChild(projectDetails);
           };
+        obj.sortDisplay = () => {
+            if (obj.taskCompletion === 'Incomplete') {
+                incompleteTasks.removeChild(projectDetails);
+                incompleteTasks.appendChild(projectDetails);
+            } else {
+                completeTasks.removeChild(projectDetails);
+                completeTasks.appendChild(projectDetails);
+            }
+        };  
         //code to set for completion button that will set completion status
         completionStatus.addEventListener('mousedown', () => {
             //from incomplete to complete
@@ -430,18 +443,18 @@ const domManip = (() => {
               const circles = document.querySelectorAll(".circle");
               for (let circle of circles) {
                 if (circle.classList.contains("active")) {
-                  priorityChosen = circle.id;
+                  obj.priorityChosen = circle.id;
                 }
               }
               const date = parseISO(obj.dueDate);
               const formattedDate = format(date, "PPP");
               obj.formattedDate = formattedDate;
               //these are the live edits to the current task box
-              if (priorityChosen === "low") {
+              if (obj.priorityChosen === "low") {
                 actualPriority.classList.add("low-priority");
                 actualPriority.classList.remove("medium-priority");
                 actualPriority.classList.remove("high-priority");
-              } else if (priorityChosen === "medium") {
+              } else if (obj.priorityChosen === "medium") {
                 actualPriority.classList.add("medium-priority");
                 actualPriority.classList.remove("low-priority");
                 actualPriority.classList.remove("high-priority");
@@ -494,8 +507,8 @@ const domManip = (() => {
       if (e.key === '9') {
           console.log(project.tasks);
       };
-  })
-  //the order of removal not right
+  });
+  //code for the 'Clear completed tasks' button
   const clearCompleted = (() =>{
      const clearButton = document.querySelector('.clear-complete');
       clearButton.addEventListener('mousedown', () => {
@@ -505,7 +518,128 @@ const domManip = (() => {
               } else return task;
           });
       });
-  })(); 
+  })();
+  //code for the sorting buttons
+  const sort = (() => {
+    const sortingMethod = document.querySelector('.sorting-method');
+    const sortingReverse = document.querySelector('.sorting-reverse');
+    const dropDownSort = document.querySelector('.drop-down-sort');
+    const dateCreatedSort = document.querySelector('.date-created');
+    const prioritySort = document.querySelector('.priority');
+    const dueDateSort = document.querySelector('.due-date');
+    sortingMethod.addEventListener('mousedown', () => {
+        dropDownSort.classList.toggle('transist');
+        dropDownSort.classList.remove('invisible');
+    });
+    dropDownSort.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('date-created')){
+            sortingMethod.textContent = 'Date created';
+            const sortByCreation = project.tasks.sort(function(a,b) {
+                return compareAsc(a.timeCreated,b.timeCreated);
+            });
+            sortByCreation.forEach(task => {
+                task.sortDisplay();
+            });
+        } else if (e.target.classList.contains('priority')){
+            sortingMethod.textContent = 'Priority';
+            project.tasks.forEach(task => {
+                if (task.priorityChosen === 'low') {
+                    task.priorityGrade = -1;
+                } else if (task.priorityChosen === 'medium') {
+                    task.priorityGrade = 0;
+                } else {
+                    task.priorityGrade = 1;
+                }
+            });
+            const sortByPriority = project.tasks.sort((a,b) => {
+                return a.priorityGrade - b.priorityGrade;
+            });
+            sortByPriority.forEach(task => {
+                task.sortDisplay();
+            });
+        } else {
+            sortingMethod.textContent = 'Due date';
+            const sortByDue = project.tasks.sort(function(a,b){
+                return compareAsc(parseISO(a.dueDate), parseISO(b.dueDate));
+            });
+            sortByDue.forEach(task => {
+                task.sortDisplay();
+            })
+        };
+        dropDownSort.classList.toggle('transist');
+        dropDownSort.classList.add('invisible');
+        sortingReverse.classList.remove('reversed');
+    });
+    sortingReverse.addEventListener('mousedown', () => {
+        if (!sortingReverse.classList.contains('reversed')){
+        if (sortingMethod.textContent === 'Date created') {
+            const sortByCreation = project.tasks.sort(function(a,b) {
+                return compareDesc(a.timeCreated,b.timeCreated);
+            });
+            sortByCreation.forEach(task => {
+                task.sortDisplay();
+            });
+        } else if (sortingMethod.textContent === 'Priority') {
+            project.tasks.forEach(task => {
+                if (task.priorityChosen === 'low') {
+                    task.priorityGrade = 1;
+                } else if (task.priorityChosen === 'medium') {
+                    task.priorityGrade = 0;
+                } else {
+                    task.priorityGrade = -1;
+                }
+            });
+            const sortByPriority = project.tasks.sort((a,b) => {
+                return a.priorityGrade - b.priorityGrade;
+            });
+            sortByPriority.forEach(task => {
+                task.sortDisplay();
+            });
+        } else {
+            const sortByDue = project.tasks.sort(function(a,b){
+                return compareDesc(parseISO(a.dueDate), parseISO(b.dueDate));
+            });
+            sortByDue.forEach(task => {
+                task.sortDisplay();
+            })
+        }
+        sortingReverse.classList.toggle('reversed');
+    } else {
+        if (sortingMethod.textContent === 'Date created') {
+            const sortByCreation = project.tasks.sort(function(a,b) {
+                return compareAsc(a.timeCreated,b.timeCreated);
+            });
+            sortByCreation.forEach(task => {
+                task.sortDisplay();
+            });
+        } else if (sortingMethod.textContent === 'Priority') {
+            project.tasks.forEach(task => {
+                if (task.priorityChosen === 'low') {
+                    task.priorityGrade = -1;
+                } else if (task.priorityChosen === 'medium') {
+                    task.priorityGrade = 0;
+                } else {
+                    task.priorityGrade = 1;
+                }
+            });
+            const sortByPriority = project.tasks.sort((a,b) => {
+                return a.priorityGrade - b.priorityGrade;
+            });
+            sortByPriority.forEach(task => {
+                task.sortDisplay();
+            });
+        } else {
+            const sortByDue = project.tasks.sort(function(a,b){
+                return compareAsc(parseISO(a.dueDate), parseISO(b.dueDate));
+            });
+            sortByDue.forEach(task => {
+                task.sortDisplay();
+            })
+        }
+        sortingReverse.classList.toggle('reversed');
+    }
+})
+  })();
 })();
 
 export { domManip };

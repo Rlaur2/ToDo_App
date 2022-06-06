@@ -214,20 +214,23 @@ header {
     margin-left: 32.5vw;
     margin-top: -1rem;
     position: absolute; 
-    transform: scaleY(1);
+    transform: scaleY(0);
     transform-origin: top;
     transition: transform 150ms ease-out 50ms;
     background-color: bisque;
     z-index: 10;
-    /* drop-down menu looking good */
-    display: none;   
 }
 
-/* transition looking good
-.drop-down-sort:hover {
-    transform: scaleY(0);
+.transist {
+    transform: scaleY(1);
     transform-origin: top;
-} */
+}
+
+/* had to look up the visibility property. It seems to work better
+for hiding and displaying things with transitions. */
+.invisible {
+    visibility: hidden;
+}
 
 .date-created, .priority, .due-date {
     padding: .1rem .4rem;
