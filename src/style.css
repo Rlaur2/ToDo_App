@@ -157,6 +157,11 @@ header {
     margin-top: 1rem;
 }
 
+.project-and-tasks {
+    display: flex;
+    flex-flow: column;
+}
+
 .project-container {
     display: flex;
     flex: 1;

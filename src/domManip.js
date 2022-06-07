@@ -3,8 +3,11 @@ import { format } from "date-fns";
 import { compareAsc } from "date-fns";
 import { compareDesc } from "date-fns";
 
+const allProjects = [];
 const project = { tasks: [] };
 project.name = "Default Project";
+project.currentlyActive = true;
+allProjects.push(project);
 const domManip = (() => {
   //code for side menu opening
   const menuToggle = (() => {
@@ -75,6 +78,48 @@ const domManip = (() => {
         }
       });
     });
+  })();
+  //code to add new projects
+  const addProject = (() => {
+    const newProjectButton = document.querySelector('.new-project-button');
+    newProjectButton.addEventListener('mousedown', () => {
+        //the classes might say edit project name but this is for
+        //initial creation
+        const popUps = document.querySelector(".pop-ups");
+        const editNameModal = document.createElement("div");
+        editNameModal.classList.toggle("edit-project-name");
+        const transparentBG = document.createElement("div");
+        transparentBG.classList.toggle("transparent-background");
+        const editName = document.createElement("div");
+        editName.classList.toggle("edit-name");
+        editName.innerHTML = `<label for="project-name">Project Name</label>`;
+        const projectName = document.createElement("input");
+        projectName.type = "text";
+        projectName.id = "project-name";
+        projectName.placeholder = project.name;
+        const editNameSubmit = document.createElement("div");
+        editNameSubmit.classList.toggle("edit-name-submit");
+        editNameSubmit.textContent = "Submit";
+        editName.appendChild(projectName);
+        editName.appendChild(editNameSubmit);
+        transparentBG.appendChild(editName);
+        editNameModal.appendChild(transparentBG);
+        popUps.appendChild(editNameModal);
+        //code to cancel form if hitting escape or clicking away
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          popUps.removeChild(editNameModal);
+        }
+      },
+      { once: true }
+    );
+    transparentBG.addEventListener("mousedown", (e) => {
+      if (e.target !== transparentBG) {
+        return;
+      } else popUps.removeChild(editNameModal);
+    });
+    })
+    //the above is the last thing I did
   })();
   //code to add new tasks to current project
   let priorityChosen = "";
@@ -505,7 +550,7 @@ const domManip = (() => {
   //this code is just for debugging. Be sure to delete before launching
   document.addEventListener('keydown',(e) => {
       if (e.key === '9') {
-          console.log(project.tasks);
+          console.log(allProjects);
       };
   });
   //code for the 'Clear completed tasks' button
@@ -520,6 +565,7 @@ const domManip = (() => {
       });
   })();
   //code for the sorting buttons
+  //the three query selected buttons are not used, they can be deleted
   const sort = (() => {
     const sortingMethod = document.querySelector('.sorting-method');
     const sortingReverse = document.querySelector('.sorting-reverse');
