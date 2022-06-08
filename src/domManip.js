@@ -65,6 +65,12 @@ const domManip = (() => {
                 } else {
                   project.name = projectName.value;
                   title.textContent = projectName.value;
+                  const projectTitles = document.querySelectorAll('.project');
+                  for (let projectTitle of projectTitles) {
+                    if (projectTitle.classList.contains('currently-active')) {
+                        projectTitle.textContent = project.name;
+                    }
+                  }
                   popUps.removeChild(editNameModal);
                 }
             } else return;
@@ -87,12 +93,21 @@ const domManip = (() => {
       });
     });
   })();
+  //code for initial project display and switching between active projects
+  const initialProject = (() => {
+    const projectTitle = document.querySelector('.project');
+    allProjects.forEach(project => {
+        if (project.currentlyActive) {
+            projectTitle.textContent = project.name;
+        } else return;
+    })
+  })();
   //code to add new projects
   const addProject = (() => {
     const newProjectButton = document.querySelector('.new-project-button');
     newProjectButton.addEventListener('mousedown', () => {
         //the classes might say edit project name but this is for
-        //initial creation
+        //initial creation, not edited
         const popUps = document.querySelector(".pop-ups");
         const editNameModal = document.createElement("div");
         editNameModal.classList.toggle("edit-project-name");
@@ -129,30 +144,96 @@ const domManip = (() => {
     
     editNameSubmit.addEventListener('mousedown', () => {
         const title = document.querySelector('.title');
+        title.textContent = projectName.value;
+        const projectArea = document.querySelector('.project-area');
+        const projectAndTasks = document.createElement('div');
+        projectAndTasks.classList.toggle('project-and-tasks');
+        const projectContainer = document.createElement('div');
+        projectContainer.classList.toggle('project-container');
+        const editProject = document.createElement('div');
+        editProject.classList.toggle('edit-project');
+        editProject.innerHTML = '<img src="../src/images/dots-vertical.svg" alt="Edit or delete button">';
+        const projectTitle = document.createElement('div');
+        projectTitle.classList.toggle('project');
+        const disableCurrentlyActiveClass = (() => {
+            const projectTitles = document.querySelectorAll('.project');
+            for (let title of projectTitles) {
+                title.classList.remove('currently-active');
+            }
+        })();
+        projectTitle.classList.toggle('currently-active');
+        projectTitle.textContent = projectName.value;
+        const arrow = document.createElement('img');
+        arrow.classList.toggle('arrow');
+        arrow.src = '../src/images/menu-right-outline.svg';
+        arrow.alt = 'Task expand button';
+        //makes all projects 'inactive'
         allProjects.forEach(project => {
             project.currentlyActive = false;
         });
+        //project constructor, also makes it currently active
         const newProject = {
             name: projectName.value,
             currentlyActive: true,
             tasks: []
         };
-        title.textContent = projectName.value;
-        allProjects.push(newProject);
-        popUps.removeChild(editNameModal);
-        });
-    projectName.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            const title = document.querySelector('.title');
+        projectContainer.appendChild(editProject);
+        projectContainer.appendChild(projectTitle);
+        projectContainer.appendChild(arrow);
+        projectAndTasks.appendChild(projectContainer);
+        projectArea.appendChild(projectAndTasks);
+        //code to switch between active projects
+        projectTitle.addEventListener('mousedown', () => {
+            const projectTitles = document.querySelectorAll('.project');
+            for (let title of projectTitles) {
+                title.classList.remove('currently-active');
+            }
+            projectTitle.classList.add('currently-active');
             allProjects.forEach(project => {
                 project.currentlyActive = false;
             });
+            newProject.currentlyActive = true;
+            title.textContent = newProject.name;
+        });
+        allProjects.push(newProject);
+        popUps.removeChild(editNameModal);
+        });
+        //stop testing with enter ATM, copy+paste when all down
+        projectName.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const title = document.querySelector('.title');
+            title.textContent = projectName.value;
+            const projectArea = document.querySelector('.project-area');
+            const projectAndTasks = document.createElement('div');
+            projectAndTasks.classList.toggle('project-and-tasks');
+            const projectContainer = document.createElement('div');
+            projectContainer.classList.toggle('project-container');
+            const editProject = document.createElement('div');
+            editProject.classList.toggle('edit-project');
+            editProject.innerHTML = '<img src="../src/images/dots-vertical.svg" alt="Edit or delete button">';
+            const projectTitle = document.createElement('div');
+            projectTitle.classList.toggle('project');
+            projectTitle.classList.toggle('currently-active');
+            projectTitle.textContent = projectName.value;
+            const arrow = document.createElement('img');
+            arrow.classList.toggle('arrow');
+            arrow.src = '../src/images/menu-right-outline.svg';
+            arrow.alt = 'Task expand button';
+            //makes all projects 'inactive'
+            allProjects.forEach(project => {
+                project.currentlyActive = false;
+            });
+            //project constructor, also makes it currently active
             const newProject = {
                 name: projectName.value,
                 currentlyActive: true,
                 tasks: []
             };
-            title.textContent = projectName.value;
+            projectContainer.appendChild(editProject);
+            projectContainer.appendChild(projectTitle);
+            projectContainer.appendChild(arrow);
+            projectAndTasks.appendChild(projectContainer);
+            projectArea.appendChild(projectAndTasks);
             allProjects.push(newProject);
             popUps.removeChild(editNameModal);
             };

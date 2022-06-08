@@ -5,6 +5,11 @@ high-priority fixes to do
 -Make all project object stuff into it's own module
 -menu sidebar doesn't extend past 100vh 
 
+med-priority fixes to do
+-take out placeholder of previous project when adding new project
+-change the variable names in the 'addNewProjects' function to make it easier to understand
+
+
 low-priority fixes to do
 -Make the current priority be pre-selected when editing a to-do
 
