@@ -58,24 +58,32 @@ const domManip = (() => {
       });
       //code that ties name value to a variable that will be exported
       editNameSubmit.addEventListener("mousedown", () => {
-        if (!projectName.value) {
-          popUps.removeChild(editNameModal);
-        } else {
-          project.name = projectName.value;
-          title.textContent = projectName.value;
-          popUps.removeChild(editNameModal);
-        }
-      });
+        allProjects.forEach(project => {
+            if (project.currentlyActive) {
+                if (!projectName.value) {
+                  popUps.removeChild(editNameModal);
+                } else {
+                  project.name = projectName.value;
+                  title.textContent = projectName.value;
+                  popUps.removeChild(editNameModal);
+                }
+            } else return;
+          });
+        })
       projectName.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          if (!projectName.value) {
-            popUps.removeChild(editNameModal);
-          } else {
-            project.name = projectName.value;
-            title.textContent = projectName.value;
-            popUps.removeChild(editNameModal);
-          }
-        }
+        allProjects.forEach(project => {
+            if (project.currentlyActive){
+                if (e.key === "Enter") {
+                  if (!projectName.value) {
+                    popUps.removeChild(editNameModal);
+                  } else {
+                    project.name = projectName.value;
+                    title.textContent = projectName.value;
+                    popUps.removeChild(editNameModal);
+                  }
+                }
+            } else return;
+        });
       });
     });
   })();
@@ -112,14 +120,44 @@ const domManip = (() => {
         }
       },
       { once: true }
-    );
+        );
     transparentBG.addEventListener("mousedown", (e) => {
       if (e.target !== transparentBG) {
         return;
       } else popUps.removeChild(editNameModal);
-    });
+        });
+    
+    editNameSubmit.addEventListener('mousedown', () => {
+        const title = document.querySelector('.title');
+        allProjects.forEach(project => {
+            project.currentlyActive = false;
+        });
+        const newProject = {
+            name: projectName.value,
+            currentlyActive: true,
+            tasks: []
+        };
+        title.textContent = projectName.value;
+        allProjects.push(newProject);
+        popUps.removeChild(editNameModal);
+        });
+    projectName.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const title = document.querySelector('.title');
+            allProjects.forEach(project => {
+                project.currentlyActive = false;
+            });
+            const newProject = {
+                name: projectName.value,
+                currentlyActive: true,
+                tasks: []
+            };
+            title.textContent = projectName.value;
+            allProjects.push(newProject);
+            popUps.removeChild(editNameModal);
+            };
+        });
     })
-    //the above is the last thing I did
   })();
   //code to add new tasks to current project
   let priorityChosen = "";
@@ -243,7 +281,11 @@ const domManip = (() => {
           taskCompletion: 'Incomplete',
           timeCreated,
         };
-        project.tasks.push(input);
+        allProjects.forEach(project => {
+            if (project.currentlyActive) {
+                project.tasks.push(input);
+            } else return;
+        });
         displayTaskDetails(input);
         popUps.removeChild(taskInputDetails);
       });
@@ -522,10 +564,14 @@ const domManip = (() => {
                 } else {
                     completeTasks.removeChild(projectDetails);
                 }
-                project.tasks.splice(obj.position, 1);
-                project.tasks.forEach((task, index) => {
-                    task.position = index;
-                });
+                allProjects.forEach(project => {
+                    if (project.currentlyActive) {
+                        project.tasks.splice(obj.position, 1);
+                        project.tasks.forEach((task, index) => {
+                            task.position = index;
+                        });
+                    } else return;
+                })
           });
         });
       };
@@ -557,10 +603,14 @@ const domManip = (() => {
   const clearCompleted = (() =>{
      const clearButton = document.querySelector('.clear-complete');
       clearButton.addEventListener('mousedown', () => {
-          project.tasks = project.tasks.filter((task) => {
-              if (task.taskCompletion === 'Complete') {
-                task.clear();  
-              } else return task;
+          allProjects.forEach(project => {
+              if (project.currentlyActive) {
+                  project.tasks = project.tasks.filter((task) => {
+                      if (task.taskCompletion === 'Complete') {
+                        task.clear();  
+                      } else return task;
+                  });
+              } else return;
           });
       });
   })();
@@ -580,36 +630,48 @@ const domManip = (() => {
     dropDownSort.addEventListener('mousedown', (e) => {
         if (e.target.classList.contains('date-created')){
             sortingMethod.textContent = 'Date created';
-            const sortByCreation = project.tasks.sort(function(a,b) {
-                return compareAsc(a.timeCreated,b.timeCreated);
-            });
-            sortByCreation.forEach(task => {
-                task.sortDisplay();
-            });
+            allProjects.forEach(project => {
+                if (project.currentlyActive) {
+                    const sortByCreation = project.tasks.sort(function(a,b) {
+                        return compareAsc(a.timeCreated,b.timeCreated);
+                    });
+                    sortByCreation.forEach(task => {
+                        task.sortDisplay();
+                    });
+                } else return;
+            })
         } else if (e.target.classList.contains('priority')){
             sortingMethod.textContent = 'Priority';
-            project.tasks.forEach(task => {
-                if (task.priorityChosen === 'low') {
-                    task.priorityGrade = -1;
-                } else if (task.priorityChosen === 'medium') {
-                    task.priorityGrade = 0;
-                } else {
-                    task.priorityGrade = 1;
-                }
-            });
-            const sortByPriority = project.tasks.sort((a,b) => {
-                return a.priorityGrade - b.priorityGrade;
-            });
-            sortByPriority.forEach(task => {
-                task.sortDisplay();
-            });
+            allProjects.forEach(project => {
+                if (project.currentlyActive) {
+                    project.tasks.forEach(task => {
+                        if (task.priorityChosen === 'low') {
+                            task.priorityGrade = -1;
+                        } else if (task.priorityChosen === 'medium') {
+                            task.priorityGrade = 0;
+                        } else {
+                            task.priorityGrade = 1;
+                        }
+                    });
+                    const sortByPriority = project.tasks.sort((a,b) => {
+                        return a.priorityGrade - b.priorityGrade;
+                    });
+                    sortByPriority.forEach(task => {
+                        task.sortDisplay();
+                    });
+                } else return;
+            })
         } else {
             sortingMethod.textContent = 'Due date';
-            const sortByDue = project.tasks.sort(function(a,b){
-                return compareAsc(parseISO(a.dueDate), parseISO(b.dueDate));
-            });
-            sortByDue.forEach(task => {
-                task.sortDisplay();
+            allProjects.forEach(project => {
+                if (project.currentlyActive) {
+                    const sortByDue = project.tasks.sort(function(a,b){
+                        return compareAsc(parseISO(a.dueDate), parseISO(b.dueDate));
+                    });
+                    sortByDue.forEach(task => {
+                        task.sortDisplay();
+                    });
+                } else return;
             })
         };
         dropDownSort.classList.toggle('transist');
@@ -619,67 +681,91 @@ const domManip = (() => {
     sortingReverse.addEventListener('mousedown', () => {
         if (!sortingReverse.classList.contains('reversed')){
         if (sortingMethod.textContent === 'Date created') {
-            const sortByCreation = project.tasks.sort(function(a,b) {
-                return compareDesc(a.timeCreated,b.timeCreated);
-            });
-            sortByCreation.forEach(task => {
-                task.sortDisplay();
-            });
+            allProjects.forEach(project => {
+                if (project.currentlyActive) {
+                    const sortByCreation = project.tasks.sort(function(a,b) {
+                        return compareDesc(a.timeCreated,b.timeCreated);
+                    });
+                    sortByCreation.forEach(task => {
+                        task.sortDisplay();
+                    });
+                } else return;
+            })
         } else if (sortingMethod.textContent === 'Priority') {
-            project.tasks.forEach(task => {
-                if (task.priorityChosen === 'low') {
-                    task.priorityGrade = 1;
-                } else if (task.priorityChosen === 'medium') {
-                    task.priorityGrade = 0;
-                } else {
-                    task.priorityGrade = -1;
-                }
-            });
-            const sortByPriority = project.tasks.sort((a,b) => {
-                return a.priorityGrade - b.priorityGrade;
-            });
-            sortByPriority.forEach(task => {
-                task.sortDisplay();
-            });
+            allProjects.forEach(project => {
+                if (project.currentlyActive) {
+                    project.tasks.forEach(task => {
+                        if (task.priorityChosen === 'low') {
+                            task.priorityGrade = 1;
+                        } else if (task.priorityChosen === 'medium') {
+                            task.priorityGrade = 0;
+                        } else {
+                            task.priorityGrade = -1;
+                        }
+                    });
+                    const sortByPriority = project.tasks.sort((a,b) => {
+                        return a.priorityGrade - b.priorityGrade;
+                    });
+                    sortByPriority.forEach(task => {
+                        task.sortDisplay();
+                    });
+                } else return;
+            })
         } else {
-            const sortByDue = project.tasks.sort(function(a,b){
-                return compareDesc(parseISO(a.dueDate), parseISO(b.dueDate));
-            });
-            sortByDue.forEach(task => {
-                task.sortDisplay();
+            allProjects.forEach(project => {
+                if (project.currentlyActive){
+                    const sortByDue = project.tasks.sort(function(a,b){
+                        return compareDesc(parseISO(a.dueDate), parseISO(b.dueDate));
+                    });
+                    sortByDue.forEach(task => {
+                        task.sortDisplay();
+                    })
+                } else return;
             })
         }
         sortingReverse.classList.toggle('reversed');
     } else {
         if (sortingMethod.textContent === 'Date created') {
-            const sortByCreation = project.tasks.sort(function(a,b) {
-                return compareAsc(a.timeCreated,b.timeCreated);
-            });
-            sortByCreation.forEach(task => {
-                task.sortDisplay();
-            });
+            allProjects.forEach(project => {
+                if (project.currentlyActive) {
+                    const sortByCreation = project.tasks.sort(function(a,b) {
+                        return compareAsc(a.timeCreated,b.timeCreated);
+                    });
+                    sortByCreation.forEach(task => {
+                        task.sortDisplay();
+                    });
+                } else return;
+            })
         } else if (sortingMethod.textContent === 'Priority') {
-            project.tasks.forEach(task => {
-                if (task.priorityChosen === 'low') {
-                    task.priorityGrade = -1;
-                } else if (task.priorityChosen === 'medium') {
-                    task.priorityGrade = 0;
-                } else {
-                    task.priorityGrade = 1;
-                }
-            });
-            const sortByPriority = project.tasks.sort((a,b) => {
-                return a.priorityGrade - b.priorityGrade;
-            });
-            sortByPriority.forEach(task => {
-                task.sortDisplay();
-            });
+            allProjects.forEach(project => {
+                if(project.currentlyActive) {
+                    project.tasks.forEach(task => {
+                        if (task.priorityChosen === 'low') {
+                            task.priorityGrade = -1;
+                        } else if (task.priorityChosen === 'medium') {
+                            task.priorityGrade = 0;
+                        } else {
+                            task.priorityGrade = 1;
+                        }
+                    });
+                    const sortByPriority = project.tasks.sort((a,b) => {
+                        return a.priorityGrade - b.priorityGrade;
+                    });
+                    sortByPriority.forEach(task => {
+                        task.sortDisplay();
+                    });
+                } else return;
+            })
         } else {
-            const sortByDue = project.tasks.sort(function(a,b){
-                return compareAsc(parseISO(a.dueDate), parseISO(b.dueDate));
-            });
-            sortByDue.forEach(task => {
-                task.sortDisplay();
+            allProjects.forEach(project => {
+                if (project.currentlyActive) {
+                    const sortByDue = project.tasks.sort(function(a,b){
+                        return compareAsc(parseISO(a.dueDate), parseISO(b.dueDate));
+                    });
+                    sortByDue.forEach(task => {
+                        task.sortDisplay();
+                    });
+                } else return;
             })
         }
         sortingReverse.classList.toggle('reversed');
